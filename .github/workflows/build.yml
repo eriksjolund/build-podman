@@ -54,7 +54,7 @@ jobs:
           persist-credentials: false
       - name: podman run
         run: |
-          podman run --rm -v $GITHUB_WORKSPACE/output:${{ matrix.installprefix }} -v $GITHUB_WORKSPACE/checkout_build_podman:/checkout_build_podman -v /opt/hostedtoolcache/go:/opt/hostedtoolcache/go -v $GITHUB_WORKSPACE/gopath:/gopath -e GOROOT=/opt/hostedtoolcache/go/${{ matrix.go-version }}/x64 -e PATH=/opt/hostedtoolcache/go/${{ matrix.go-version }}/x64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin docker.io/clinicalgenomics/build-podman:centos${{ matrix.centos-version }} bash /checkout_build_podman/container_build_command.sh ${{ matrix.installprefix }}
+          podman --storage-driver overlayfs --storage-opt overlay.mount_program=/usr/bin/fuse-overlayfs run --rm -v $GITHUB_WORKSPACE/output:${{ matrix.installprefix }} -v $GITHUB_WORKSPACE/checkout_build_podman:/checkout_build_podman -v /opt/hostedtoolcache/go:/opt/hostedtoolcache/go -v $GITHUB_WORKSPACE/gopath:/gopath -e GOROOT=/opt/hostedtoolcache/go/${{ matrix.go-version }}/x64 -e PATH=/opt/hostedtoolcache/go/${{ matrix.go-version }}/x64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin docker.io/clinicalgenomics/build-podman:centos${{ matrix.centos-version }} bash /checkout_build_podman/container_build_command.sh ${{ matrix.installprefix }}
       - name: check output
         run: |
           ls $GITHUB_WORKSPACE/output
