@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        centos-version: [8.2.2004, 7.7.1908]
+        centos-version: [8.3.2011, 7.7.1908]
     steps:
       -
         name: Set up QEMU
