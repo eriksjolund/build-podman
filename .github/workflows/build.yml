@@ -11,7 +11,7 @@ jobs:
         go-version: [1.15.3]
         podman-version: [ad1aaba8df96cb25e12fe28ec96f3c131e572e3e]
         conmon-version: [v2.0.27]
-        centos-version: [8, 7]
+        centos-version: [8.3.2011, 7.7.1908]
         CNI-plugins-version: [v0.9.1]
         crun-version: [0.18]
         slirp4netns-version: [v1.1.9]
@@ -52,9 +52,12 @@ jobs:
           ref: ${{ matrix.CNI-plugins-version }}
           path: gopath/src/github.com/containernetworking/plugins
           persist-credentials: false
+      - name: podman build
+        run: |
+          podman --storage-driver vfs build --build-arg=CENTOS_VERSION=${{ matrix.centos-version }} -t ${{ matrix.centos-version }} output
       - name: podman run
         run: |
-          podman --storage-driver vfs run --rm -v $GITHUB_WORKSPACE/output:${{ matrix.installprefix }} -v $GITHUB_WORKSPACE/checkout_build_podman:/checkout_build_podman -v /opt/hostedtoolcache/go:/opt/hostedtoolcache/go -v $GITHUB_WORKSPACE/gopath:/gopath -e GOROOT=/opt/hostedtoolcache/go/${{ matrix.go-version }}/x64 -e PATH=/opt/hostedtoolcache/go/${{ matrix.go-version }}/x64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin docker.io/clinicalgenomics/build-podman:centos${{ matrix.centos-version }} bash /checkout_build_podman/container_build_command.sh ${{ matrix.installprefix }}
+          podman --storage-driver vfs run --rm -v $GITHUB_WORKSPACE/output:${{ matrix.installprefix }} -v $GITHUB_WORKSPACE/checkout_build_podman:/checkout_build_podman -v /opt/hostedtoolcache/go:/opt/hostedtoolcache/go -v $GITHUB_WORKSPACE/gopath:/gopath -e GOROOT=/opt/hostedtoolcache/go/${{ matrix.go-version }}/x64 -e PATH=/opt/hostedtoolcache/go/${{ matrix.go-version }}/x64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin localhost/build-podman:${{ matrix.centos-version }} bash /checkout_build_podman/container_build_command.sh ${{ matrix.installprefix }}
       - name: check output
         run: |
           ls $GITHUB_WORKSPACE/output
