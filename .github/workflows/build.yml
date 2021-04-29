@@ -52,10 +52,6 @@ jobs:
           ref: ${{ matrix.CNI-plugins-version }}
           path: gopath/src/github.com/containernetworking/plugins
           persist-credentials: false
-      - name: configure podman
-        run: |
-          mkdir -p ~/.config/containers
-          cp checkout_build_podman/registries.conf ~/.config/containers/
       - name: podman build
         run: |
           podman --storage-driver vfs build --build-arg=CENTOS_VERSION=${{ matrix.centos-version }} -t ${{ matrix.centos-version }} checkout_build_podman
