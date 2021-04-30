@@ -8,31 +8,31 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        buildconfig: [ centos7 ]
+        config: [ centos7 ]
     steps:
       - name: Run actions/checkout for this repo
         uses: actions/checkout@v2
         with:
           path: checkout_build_podman
           persist-credentials: false
-      - name: read buildconfig JSON file
-        id: read-buildconfig
+      - name: read config JSON file
+        id: read-config
         run: |
-          json="$(cat checkout_build_podman/config/build.${{ matrix.buildconfig }}.json)"
+          json="$(cat checkout_build_podman/config/${{ matrix.config }}.json)"
           json="${json//'%'/'%25'}"
           json="${json//$'\r'/'%0D'}"
           json="${json//$'\n'/'%0A'}"
-          echo ::set-output "name=buildconfig::$json"
+          echo ::set-output "name=config::$json"
       - name: echo name
         run: |
-          echo go-version: ${{ steps.read-buildconfig.outputs.buildconfig.go-version }}
+          echo go-version: ${{ steps.read-config.outputs.config.go-version }}
       - name: fail here
         run: |
           false
       - name: Run actions/setup-go with go-version ${{ matrix.goVersion }}
         uses: actions/setup-go@v2
         with:
-          go-version: ${{ steps.read-buildconfig.outputs.buildconfig.go-version }}
+          go-version: ${{ steps.read-config.outputs.config.go-version }}
       - name: mkdir
         run: |
           mkdir $GITHUB_WORKSPACE/output

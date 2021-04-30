@@ -1,0 +1,13 @@
+{
+  "go-version" : "1.15.3",
+  "podman-version" : "ad1aaba8df96cb25e12fe28ec96f3c131e572e3e",
+  "conmon-version" : "v2.0.27",
+  "container" : { "dockerfile" : "Dockerfile.centos",
+                  "build-args" : { "centos-version" : "8.3.2011" }
+  },
+  "CNI-plugins-version" : "v0.9.1",
+  "crun-version" : "0.18",
+  "slirp4netns-version" : "v1.1.9",
+  "fuse-overlayfs-version" : "v1.4.0",
+  "installprefix" : "/home/erik.sjolund/podman"
+}
