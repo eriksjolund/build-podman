@@ -25,7 +25,7 @@ jobs:
           echo ::set-output "name=config::$json"
       - name: echo name
         run: |
-          echo go-version: ${{ steps.read-config.outputs.config.go-version }}
+          echo go-version: ${{ fromJson(steps.read-config.outputs.config).go-version }}
       - name: fail here
         run: |
           false
