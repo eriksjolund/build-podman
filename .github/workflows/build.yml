@@ -8,29 +8,35 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        go-version: [1.15.3]
-        podman-version: [ad1aaba8df96cb25e12fe28ec96f3c131e572e3e]
-        conmon-version: [v2.0.27]
-        centos-version: [8.3.2011, 7.7.1908]
-        CNI-plugins-version: [v0.9.1]
-        crun-version: [0.18]
-        slirp4netns-version: [v1.1.9]
-        fuse-overlayfs-version: [v1.4.0]
-        installprefix: [/home/erik.sjolund/podman]
+        buildconfig: [ centos7 ]
     steps:
-      - name: Run actions/setup-go with go-version ${{ matrix.goVersion }}
-        uses: actions/setup-go@v2
-        with:
-          go-version: ${{ matrix.go-version }}
-      - name: mkdir
-        run: |
-          mkdir $GITHUB_WORKSPACE/output
-          mkdir -p $GITHUB_WORKSPACE/gopath/src/github.com/containers
       - name: Run actions/checkout for this repo
         uses: actions/checkout@v2
         with:
           path: checkout_build_podman
           persist-credentials: false
+      - name: read buildconfig JSON file
+        id: read-buildconfig
+        run: |
+          json="$(cat checkout_build_podman/config/build.${{ matrix.buildconfig }}.json)"
+          json="${json//'%'/'%25'}"
+          json="${json//$'\r'/'%0D'}"
+          json="${json//$'\n'/'%0A'}"
+          echo ::set-output "name=buildconfig::$json"
+      - name: echo name
+        run: |
+          echo go-version: ${{ steps.read-buildconfig.outputs.buildconfig.go-version }}
+      - name: fail here
+         run: |
+           false
+      - name: Run actions/setup-go with go-version ${{ matrix.goVersion }}
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ steps.read-buildconfig.outputs.buildconfig.go-version }}
+      - name: mkdir
+        run: |
+          mkdir $GITHUB_WORKSPACE/output
+          mkdir -p $GITHUB_WORKSPACE/gopath/src/github.com/containers
       - name: Run actions/checkout for containers/conmon
         uses: actions/checkout@v2
         with:
