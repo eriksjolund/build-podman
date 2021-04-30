@@ -27,8 +27,8 @@ jobs:
         run: |
           echo go-version: ${{ steps.read-buildconfig.outputs.buildconfig.go-version }}
       - name: fail here
-         run: |
-           false
+        run: |
+          false
       - name: Run actions/setup-go with go-version ${{ matrix.goVersion }}
         uses: actions/setup-go@v2
         with:
