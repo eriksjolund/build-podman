@@ -9,7 +9,7 @@
             "ref": "v2.0.27",
             "repository": "containers/conmon"
         },
-        "CNI-plugins-source": {
+        "CNI-plugins": {
             "ref": "v0.9.1",
             "repository": "containernetworking/plugins"
         }
