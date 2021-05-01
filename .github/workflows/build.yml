@@ -52,12 +52,15 @@ jobs:
           ref: ${{ fromJson(steps.read-config.outputs.config).gitrepos.CNI-plugins.ref }}
           path: gopath/src/github.com/containernetworking/plugins
           persist-credentials: false
+      - name: check podman version
+        run: |
+          podman --version
       - name: podman build
         run: |
           bash checkout_build_podman/build_container.bash ${{ matrix.config }}
       - name: podman run
         run: |
-          podman --storage-driver vfs run --rm -v $GITHUB_WORKSPACE/output:${{ matrix.installprefix }} -v $GITHUB_WORKSPACE/checkout_build_podman:/checkout_build_podman -v /opt/hostedtoolcache/go:/opt/hostedtoolcache/go -v $GITHUB_WORKSPACE/gopath:/gopath -e GOROOT=/opt/hostedtoolcache/go/${{ matrix.go-version }}/x64 -e PATH=/opt/hostedtoolcache/go/${{ matrix.go-version }}/x64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin localhost/build-podman:${{ matrix.config }} bash /checkout_build_podman/container_build_command.sh ${{ matrix.installprefix }}
+          podman run --rm -v $GITHUB_WORKSPACE/output:${{ matrix.installprefix }} -v $GITHUB_WORKSPACE/checkout_build_podman:/checkout_build_podman -v /opt/hostedtoolcache/go:/opt/hostedtoolcache/go -v $GITHUB_WORKSPACE/gopath:/gopath -e GOROOT=/opt/hostedtoolcache/go/${{ matrix.go-version }}/x64 -e PATH=/opt/hostedtoolcache/go/${{ matrix.go-version }}/x64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin localhost/build-podman:${{ matrix.config }} bash /checkout_build_podman/container_build_command.sh ${{ matrix.installprefix }}
       - name: check output
         run: |
           ls $GITHUB_WORKSPACE/output

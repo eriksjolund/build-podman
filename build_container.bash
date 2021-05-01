@@ -11,6 +11,6 @@ buildargs=($(cat checkout_build_podman/config/${config}.json | jq -r  '[.contain
 
 dockerfile="$(cat checkout_build_podman/config/${config}.json | jq -r .container.dockerfile )"
 echo dockerfile=$dockerfile
-echo podman --storage-driver vfs build ${buildargs[@]} -t "build-podman:$config" -f "checkout_build_podman/container/$dockerfile" checkout_build_podman/
+echo podman build ${buildargs[@]} -t "build-podman:$config" -f "checkout_build_podman/container/$dockerfile" checkout_build_podman/
 
-podman --storage-driver vfs build ${buildargs[@]} -t "build-podman:$config" -f "checkout_build_podman/container/$dockerfile" checkout_build_podman/
+podman build ${buildargs[@]} -t "build-podman:$config" -f "checkout_build_podman/container/$dockerfile" checkout_build_podman/
