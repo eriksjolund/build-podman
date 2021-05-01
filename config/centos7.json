@@ -17,8 +17,7 @@
     "container": {
         "dockerfile": "Dockerfile.centos",
         "build-args": {
-            "centos-version": "7.7.1908",
-            "extra-version": "3"
+            "CENTOS_VERSION": "7.7.1908"
         }
     },
     "download": {
