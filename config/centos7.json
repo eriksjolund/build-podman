@@ -1,13 +1,30 @@
 {
-  "go-version" : "1.15.3",
-  "podman-version" : "ad1aaba8df96cb25e12fe28ec96f3c131e572e3e",
-  "conmon-version" : "v2.0.27",
-  "container" : { "dockerfile" : "Dockerfile.centos",
-                  "build-args" : { "centos-version" : "7.7.1908" }
-  },
-  "CNI-plugins-version" : "v0.9.1",
-  "crun-version" : "0.18",
-  "slirp4netns-version" : "v1.1.9",
-  "fuse-overlayfs-version" : "v1.4.0",
-  "installprefix" : "/home/erik.sjolund/podman"
+    "go-version": "1.15.3",
+    "gitrepos": {
+        "podman": {
+            "ref": "ad1aaba8df96cb25e12fe28ec96f3c131e572e3e",
+            "repository": "containers/podman"
+        },
+        "conmon": {
+            "ref": "v2.0.27",
+            "repository": "containers/conmon"
+        },
+        "CNI-plugins-source": {
+            "ref": "v0.9.1",
+            "repository": "containernetworking/plugins"
+        }
+    },
+    "container": {
+        "dockerfile": "Dockerfile.centos",
+        "build-args": {
+            "centos-version": "7.7.1908",
+            "extra-version": "3"
+        }
+    },
+    "download": {
+        "crun": "0.18",
+        "slirp4netns": "v1.1.9",
+        "fuse-overlayfs": "v1.4.0"
+    },
+    "installprefix": "/home/erik.sjolund/podman"
 }
