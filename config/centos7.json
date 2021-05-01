@@ -21,9 +21,9 @@
         }
     },
     "download": {
-        "crun": "0.18",
+        "crun": "0.19.1",
         "slirp4netns": "v1.1.9",
-        "fuse-overlayfs": "v1.4.0"
+        "fuse-overlayfs": "v1.5.0"
     },
     "installprefix": "/home/erik.sjolund/podman"
 }
