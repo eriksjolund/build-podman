@@ -13,4 +13,4 @@ dockerfile="$(cat checkout_build_podman/config/${config}.json | jq -r .container
 echo dockerfile=$dockerfile
 echo podman build ${buildargs[@]} -t "build-podman:$config" -f "checkout_build_podman/container/$dockerfile" checkout_build_podman/
 
-podman build ${buildargs[@]} -t "build-podman:$config" -f "checkout_build_podman/container/$dockerfile" checkout_build_podman/
+podman --log-level=debug build ${buildargs[@]} -t "build-podman:$config" -f "checkout_build_podman/container/$dockerfile" checkout_build_podman/
