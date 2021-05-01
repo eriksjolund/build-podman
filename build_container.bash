@@ -7,10 +7,9 @@ fi
 
 config="$1"
 
-buildargs=($(cat checkout_build_podman/config/${config}.json | jq -r  '[.container["build-args"] | to_entries[] | @sh  "--build-arg=\(.key)=\(.value)"] | join(" ") '))
+# set array buildargs
+IFS=$'\t' read -r -a buildargs < <(cat "checkout_build_podman/config/${config}.json" | jq -r  '[.container["build-args"] | to_entries[] | "--build-arg=\(.key)=\(.value)"] | @tsv');
 
-dockerfile="$(cat checkout_build_podman/config/${config}.json | jq -r .container.dockerfile )"
-echo dockerfile=$dockerfile
-echo podman build ${buildargs[@]} -t "build-podman:$config" -f "checkout_build_podman/container/$dockerfile" checkout_build_podman/
+dockerfile="$(cat checkout_build_podman/config/${config}.json | jq -r .container.dockerfile)"
 
-podman --log-level=debug build ${buildargs[@]} -t "build-podman:$config" -f "checkout_build_podman/container/$dockerfile" checkout_build_podman/
+podman --log-level=debug build "${buildargs[@]}" -t "build-podman:$config" -f "checkout_build_podman/container/$dockerfile" checkout_build_podman/
