@@ -11,17 +11,42 @@ The GitHub actions workflow [.github/workflows/build.yml](.github/workflows/buil
 ```
     strategy:
       matrix:
-        go-version: [1.15.3]
-        podman-version: [ad1aaba8df96cb25e12fe28ec96f3c131e572e3e]
-        conmon-version: [v2.0.27]
-        centos-version: [8, 7]
-        CNI-plugins-version: [v0.9.1]
-        crun-version: [0.18]
-        slirp4netns-version: [v1.1.9]
-        fuse-overlayfs-version: [v1.4.0]
-        installprefix: [/home/erik.sjolund/podman]
+        config: [ centos7, centos8 ]
 ```
-where different versions can be specified. 
+
+that specifies the names of the build configurations to build. The build configurations are JSON files located under _config/_, for instance _config/centos8.json_
+
+```
+{
+    "go_version": "1.15.3",
+    "gitrepos": {
+        "podman": {
+            "ref": "ad1aaba8df96cb25e12fe28ec96f3c131e572e3e",
+            "repository": "containers/podman"
+        },
+        "conmon": {
+            "ref": "v2.0.27",
+            "repository": "containers/conmon"
+        },
+        "CNI-plugins": {
+            "ref": "v0.9.1",
+            "repository": "containernetworking/plugins"
+        }
+    },
+    "container": {
+        "dockerfile": "Dockerfile.centos",
+        "build_args": {
+            "CENTOS_VERSION": "8.3.2011"
+        }
+    },
+    "download": {
+        "crun": "0.19.1",
+        "slirp4netns": "v1.1.9",
+        "fuse-overlayfs": "v1.5.0"
+    },
+    "installprefix": "/home/erik.sjolund/podman"
+}
+```
 
 The executables
 
@@ -35,9 +60,9 @@ The tar archive is then uploaded as an artifact to GitHub.
 
 #### TODO and caveats
 
-* There is an unnecessary warning https://github.com/containers/podman/issues/9389 (that can be ignored).
-* After untarring the archive, there might be a need to set file SELinux security contexts with `chcon -R ` (TODO: investigate this. It seems to be a problem only when untarring outside of the home directory)
-* Investigate if the installprefix matters at all. (Does it have to match the path where the tar archive is untarred?)
+* There is an unnecessary warning _WARN[0000] Found default OCIruntime /some/path/bin/crun path which is missing from [engine.runtimes] in containers.conf_ (see https://github.com/containers/podman/issues/9389) that can be ignored. The bug has been fixed in https://github.com/containers/common/releases/tag/v0.37.0 but no Podman release has yet included this common version.
+* After uncompressing the archive, there might be a need to set file SELinux security contexts with `chcon -R ` (TODO: investigate this. It seems to be a problem only when untarring outside of the home directory)
+* Investigate if _installprefix_ matters at all. (Does it have to match the path where the tar archive is untarred?)
 
 ## Install into home directory
 
@@ -45,9 +70,9 @@ A sketch:
 
 ```
 cd ~
-unzip ~/Downloads/build-podman_7272d09c0f846af0c728b014a87aafb3ab4a5d78__centos_7__podman_ad1aaba8df96cb25e12fe28ec96f3c131e572e3e__conmon_v2.0.27__CNI-plugins_v0.9.1__go_1.15.3__crun_0.18__slirp4netns_v1.1.9__fuse-overlayfs_v1.4.0.tar.zip
-tar xf build-podman_7272d09c0f846af0c728b014a87aafb3ab4a5d78__7__ad1aaba8df96cb25e12fe28ec96f3c131e572e3e__v2.0.27__v0.9.1__1.15.3__0.18__v1.1.9__v1.4.0.tar
-mv output podman
+unzip ~/Downloads/build-podman_ebb721f1868e408e1f82ef0edf182f8bf4641969__centos8__ad1aaba8df96cb25e12fe28ec96f3c131e572e3e__v2.0.27__v0.9.1__1.15.3__0.19.1__v1.1.9__v1.5.0.tar.zip
+tar xf build-podman_ebb721f1868e408e1f82ef0edf182f8bf4641969__centos8__ad1aaba8df96cb25e12fe28ec96f3c131e572e3e__v2.0.27__v0.9.1__1.15.3__0.19.1__v1.1.9__v1.5.0.tar
+ln -s build-podman_ebb721f1868e408e1f82ef0edf182f8bf4641969__centos8__ad1aaba8df96cb25e12fe28ec96f3c131e572e3e__v2.0.27__v0.9.1__1.15.3__0.19.1__v1.1.9__v1.5.0 podman
 ```
 
 Create the configuration files _~/.config/containers/containers.conf_
@@ -58,9 +83,8 @@ and _~/.config/containers/storage.conf_. (TODO: provide examples of how they cou
 Run podman
 
 ```
-podman --runtime=~/podman/bin/crun --storage-driver overlay --storage-opt overlay.mount_program=~/podman/bin/fuse-overlayfs run --rm -ti docker.io/library/alpine
+podman run --rm -ti docker.io/library/alpine
 ```
-
 
 ## Adjusting user systemd services
 
