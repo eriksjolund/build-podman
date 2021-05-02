@@ -23,10 +23,10 @@ jobs:
           json="${json//$'\r'/'%0D'}"
           json="${json//$'\n'/'%0A'}"
           echo ::set-output "name=config::$json"
-      - name: Run actions/setup-go with go-version ${{ fromJson(steps.read-config.outputs.config).go-version }}
+      - name: Run actions/setup-go with go version ${{ fromJson(steps.read-config.outputs.config).go_version }}
         uses: actions/setup-go@v2
         with:
-          go-version: ${{ fromJson(steps.read-config.outputs.config).go-version }}
+          go-version: ${{ fromJson(steps.read-config.outputs.config).go_version }}
       - name: mkdir
         run: |
           mkdir $GITHUB_WORKSPACE/output
@@ -74,7 +74,7 @@ jobs:
           chmod 755 output/bin/fuse-overlayfs
       - name: set name
         id: setname
-        run: echo ::set-output name=outputname::build-podman_${{ github.sha }}__${{ matrix.config }}__${{ fromJson(steps.read-config.outputs.config).gitrepos.podman.ref }}__${{ fromJson(steps.read-config.outputs.config).gitrepos.conmon.ref }}__${{ fromJson(steps.read-config.outputs.config).gitrepos.CNI-plugins.ref }}__${{ fromJson(steps.read-config.outputs.config).go-version }}__${{ fromJson(steps.read-config.outputs.config).download.crun }}__${{ fromJson(steps.read-config.outputs.config).download.slirp4netns }}__${{ fromJson(steps.read-config.outputs.config).download.fuse-overlayfs }}
+        run: echo ::set-output name=outputname::build-podman_${{ github.sha }}__${{ matrix.config }}__${{ fromJson(steps.read-config.outputs.config).gitrepos.podman.ref }}__${{ fromJson(steps.read-config.outputs.config).gitrepos.conmon.ref }}__${{ fromJson(steps.read-config.outputs.config).gitrepos.CNI-plugins.ref }}__${{ fromJson(steps.read-config.outputs.config).go_version }}__${{ fromJson(steps.read-config.outputs.config).download.crun }}__${{ fromJson(steps.read-config.outputs.config).download.slirp4netns }}__${{ fromJson(steps.read-config.outputs.config).download.fuse-overlayfs }}
       - name: create tar archive
         run: |
           mv output ${{steps.setname.outputs.outputname}}

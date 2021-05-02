@@ -8,7 +8,7 @@ fi
 config="$1"
 
 # set array buildargs
-IFS=$'\t' read -r -a buildargs < <(cat "checkout_build_podman/config/${config}.json" | jq -r  '[.container["build-args"] | to_entries[] | "--build-arg=\(.key)=\(.value)"] | @tsv');
+IFS=$'\t' read -r -a buildargs < <(cat "checkout_build_podman/config/${config}.json" | jq -r  '[.container.build_args | to_entries[] | "--build-arg=\(.key)=\(.value)"] | @tsv');
 
 dockerfile="$(cat checkout_build_podman/config/${config}.json | jq -r .container.dockerfile)"
 

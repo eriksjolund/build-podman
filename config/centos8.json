@@ -1,5 +1,5 @@
 {
-    "go-version": "1.15.3",
+    "go_version": "1.15.3",
     "gitrepos": {
         "podman": {
             "ref": "ad1aaba8df96cb25e12fe28ec96f3c131e572e3e",
@@ -16,7 +16,7 @@
     },
     "container": {
         "dockerfile": "Dockerfile.centos",
-        "build-args": {
+        "build_args": {
             "CENTOS_VERSION": "8.3.2011"
         }
     },

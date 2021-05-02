@@ -7,7 +7,7 @@ fi
 
 config="$1"
 
-go_version="$(cat checkout_build_podman/config/${config}.json | jq -r .go-version)"
+go_version="$(cat checkout_build_podman/config/${config}.json | jq -r .go_version)"
 installprefix="$(cat checkout_build_podman/config/${config}.json | jq -r .installprefix)"
 
 podman run \
