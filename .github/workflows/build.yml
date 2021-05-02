@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        config: [ centos7, centos8 ]
+        config: [ centos7 ]
     steps:
       - name: Run actions/checkout for this repo
         uses: actions/checkout@v2
