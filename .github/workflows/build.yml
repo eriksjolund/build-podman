@@ -60,7 +60,7 @@ jobs:
           bash checkout_build_podman/build_containerimage.bash ${{ matrix.config }}
       - name: podman run
         run: |
-          bash build_podman_wrapper.bash ${{ matrix.config }}
+          bash checkout_build_podman/build_podman_wrapper.bash ${{ matrix.config }}
       - name: check output
         run: |
           ls $GITHUB_WORKSPACE/output
