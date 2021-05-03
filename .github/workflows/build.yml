@@ -45,6 +45,13 @@ jobs:
           ref: ${{ fromJson(steps.read-config.outputs.config).gitrepos.podman.ref }}
           path: gopath/src/github.com/containers/podman
           persist-credentials: false
+      # Podman issue 9389 has already been fixed in the Podman master branch
+      # (See https://github.com/containers/podman/issues/9389)
+      # Remove this workaround later
+      - name: Fix Podman issue 9389
+        run: |
+          sed -i 's#logrus.Warningf("Found default OCIruntime %s path which is missing from [engine.runtimes] in containers.conf", path)#logrus.Debugf("Found default OCI runtime %s path via PATH environment variable", path)#g' gopath/src/github.com/containers/podman/vendor/github.com/containers/common/pkg/config/config.go
+          cat gopath/src/github.com/containers/podman/vendor/github.com/containers/common/pkg/config/config.go
       - name: Run actions/checkout for CNI/plugins
         uses: actions/checkout@v2
         with:
