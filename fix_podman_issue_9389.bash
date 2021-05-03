@@ -6,7 +6,7 @@
 
 file=gopath/src/github.com/containers/podman/vendor/github.com/containers/common/pkg/config/config.go
 
-if [ ! -w $file ];
+if [ ! -w $file ]; then
   echo Trying to fix Podman issue 9389
   echo Source file is missing: $file
   exit 1
