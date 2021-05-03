@@ -13,7 +13,3 @@ if [ ! -w $file ]; then
 fi
 
 sed -i 's#logrus.Warningf("Found default OCIruntime %s path which is missing from \[engine.runtimes\] in containers.conf", path)#logrus.Debugf("Found default OCI runtime %s path via PATH environment variable", path)#g' $file
-
-echo
-cat $file
-exit 1
