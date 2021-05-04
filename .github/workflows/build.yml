@@ -72,11 +72,11 @@ jobs:
           ls $GITHUB_WORKSPACE/output
       - name: download extra executables
         run: |
-          curl -o output/bin/crun -L -s https://github.com/containers/crun/releases/download/${{ matrix.download.crun }}/crun-${{ matrix.download.crun }}-linux-amd64
+          curl -o output/bin/crun -L -s https://github.com/containers/crun/releases/download/${{ fromJson(steps.read-config.outputs.config).download.crun }}/crun-${{ fromJson(steps.read-config.outputs.config).download.crun }}-linux-amd64
           chmod 755 output/bin/crun
-          curl -o output/bin/slirp4netns -L -s https://github.com/rootless-containers/slirp4netns/releases/download/${{ matrix.download.slirp4netns }}/slirp4netns-x86_64
+          curl -o output/bin/slirp4netns -L -s https://github.com/rootless-containers/slirp4netns/releases/download/${{ fromJson(steps.read-config.outputs.config).download.slirp4netns }}/slirp4netns-x86_64
           chmod 755 output/bin/slirp4netns
-          curl -o output/bin/fuse-overlayfs -L -s https://github.com/containers/fuse-overlayfs/releases/download/${{ matrix.download.fuse-overlayfs }}/fuse-overlayfs-x86_64
+          curl -o output/bin/fuse-overlayfs -L -s https://github.com/containers/fuse-overlayfs/releases/download/${{ fromJson(steps.read-config.outputs.config).download.fuse-overlayfs }}/fuse-overlayfs-x86_64
           chmod 755 output/bin/fuse-overlayfs
       - name: set name
         id: setname
