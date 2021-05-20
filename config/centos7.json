@@ -2,7 +2,7 @@
     "go_version": "1.15.3",
     "gitrepos": {
         "podman": {
-            "ref": "ad1aaba8df96cb25e12fe28ec96f3c131e572e3e",
+            "ref": "fe0595683a05c0f0307e07f0cce29f6ae0b3d310",
             "repository": "containers/podman"
         },
         "conmon": {
@@ -22,7 +22,7 @@
     },
     "download": {
         "crun": "0.19.1",
-        "slirp4netns": "v1.1.9",
+        "slirp4netns": "v1.1.10",
         "fuse-overlayfs": "v1.5.0"
     },
     "installprefix": "/home/erik.sjolund/podman"
