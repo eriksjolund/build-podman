@@ -2,7 +2,7 @@
     "go_version": "1.15.3",
     "gitrepos": {
         "podman": {
-            "ref": "fe0595683a05c0f0307e07f0cce29f6ae0b3d310",
+            "ref": "6f28b151b659d2c0a0173f524daf5e128bf526ed",
             "repository": "containers/podman"
         },
         "conmon": {
