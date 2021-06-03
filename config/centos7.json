@@ -2,11 +2,11 @@
     "go_version": "1.15.3",
     "gitrepos": {
         "podman": {
-            "ref": "6f28b151b659d2c0a0173f524daf5e128bf526ed",
+            "ref": "0281ef262dd0ffae28b5fa5e4bdf545f93c08dc7",
             "repository": "containers/podman"
         },
         "conmon": {
-            "ref": "v2.0.27",
+            "ref": "v2.0.29",
             "repository": "containers/conmon"
         },
         "CNI-plugins": {
@@ -21,7 +21,7 @@
         }
     },
     "download": {
-        "crun": "0.19.1",
+        "crun": "0.20",
         "slirp4netns": "v1.1.10",
         "fuse-overlayfs": "v1.5.0"
     },
